@@ -1,26 +1,33 @@
 import React from "react";
-import { fireEvent, getByText, render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import BubblePage from "./BubblePage";
-import App from '../App';
+import { fetchBubbles as mockFetchBubbles } from "../utils/fetchBubbles";
 
-test("Fetches data and renders the bubbles", () => {
-  // const {getByTestId} = render(<BubblePage />);
-  // const bubbles = getByTestId(/bubble/i);
-  // expect(bubbles).toHaveLength(11);
+jest.mock("../utils/fetchBubbles");
 
-  // const {getByTestId, rerender} = render(<App/>)
-  // const username = getByTestId(/username/i)
-  // const password = getByTestId(/password/i)
-  // fireEvent.change(username, { target: { value: 'Lambda School' } })
-  // fireEvent.change(password, { target: { value: 'i<3Lambd4' } })
-  // expect(username.value).toBe('Lambda School')
-  // expect(password.value).toBe('i<3Lambd4')
-  // const leftClick = { button: 1 }
-  // const button = getByTestId(/loginbtn/i)
-  // fireEvent.click(button, leftClick)
-  // const button = getByTestId(/loginbtn/i)
-  // fireEvent.click(button)
-  const {getByTestId} = render(<BubblePage />)
-  const bubbles = getByTestId('/bubble/i')
-  expect(bubbles).toHaveLength(11)
+let data = [
+  {
+    color: "aliceblue",
+    code: {
+      hex: "#f0f8ff"
+    },
+    id: 1
+  },
+  {
+    color: "limegreen",
+    code: {
+      hex: "#99ddbc"
+    },
+    id: 2
+  },
+];
+
+test("Fetches data and renders the bubbles", async () => {
+  mockFetchBubbles.mockResolvedValueOnce(data);
+
+  await render(<BubblePage />);
+  waitFor(() => {
+    const bubble = screen.getByTestId(/bubble/i);
+    expect(bubble).toHaveLength(2);
+  });
 });

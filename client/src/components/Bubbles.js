@@ -31,7 +31,8 @@ const Bubbles = ({ colors }) => {
               .map(({ x, y, r, key }, i) => {
                 if (i < colors.length) {
                   return (
-                    <Circle data-testid='bubble'
+                    <Circle 
+                      data-testid='bubble'
                       key={key}
                       cx={x}
                       cy={y}
